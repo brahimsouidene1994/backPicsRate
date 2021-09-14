@@ -1,0 +1,157 @@
+const db = require("../models");
+const multer = require("multer");
+
+const Picture = db.picture;
+const commentController = require('./comment.controller');
+
+const storage = multer.diskStorage({
+    destination: (req, file, callback) => {
+      callback(null, "uploads/userPictures");
+    },
+    filename: (req, file, callback) => {
+      callback(null, Date.now() + ".jpg");
+    },
+});
+
+const upload = multer({
+    storage: storage,
+    // fileFilter: (req, file, callback) => {
+    //   if (file.mimetype === "jpeg/jpg") callback(null, true);
+    //   else callback(new Error("cannot upload File type"), false);
+    // },
+  });
+
+exports.createPicture = (req, res) => {
+    const uploadResult = upload.single("photo");
+    uploadResult(req, res, async function (err) {
+        const{context,category,commentsStatus, userId}=req.body;
+		console.log(req.body);
+        if(req.file){
+            if(!err){
+                const path = "http://192.168.1.15:3000/uploads/userPictures/" + req.file.filename;
+                const pictureToSave = new Picture({
+                    category : category,
+                    contextPic: context,
+                    createdAt : Date.now(),
+                    path: path,
+                    status : true,
+                    commentsStatus : commentsStatus,
+                    owner : userId,
+					voters : []
+                });
+                try{
+                    const savePicture = await pictureToSave.save();
+                    res.status(200).json({
+						err: false,
+						message : "PICTURE SAVED WITH SUCCESS",
+						object : savePicture
+						});
+                }catch(err){
+                    res.json({message : err});
+                };
+            }
+        }else{
+            res.status(200).json({
+                err: true,
+                message: "GOOD REQUEST BUT THERE IS NO IMAGE TO UPLOAD",
+            });
+        }
+    });
+  };
+
+exports.updatePicture = async (req, res) =>{
+    const {contextPic, path,description, status, owner}= req.body;
+    try{
+        const  picture = await Picture.updateOne(
+            {_id : req.params.id},
+            {
+                $set: {
+                    contextPic: contextPic,
+                    description : description,
+                    path: path,
+                    status : status,
+                    owner : owner
+                }
+            });
+         res.status(200).json({
+						err: false,
+						message : "PICTURE SAVED WITH SUCCESS",
+						object : picture
+				});
+     }catch(err){
+         res.json({message : err});
+     };
+};
+
+exports.getOnePicture = async (req, res)=>{
+    try{
+       const  picture = await Picture.findById(req.params.id);
+        res.json(picture);
+    }catch(err){
+        res.json({message : err});
+    };
+};
+
+exports.deletePicture = async (req, res)=>{
+    try{
+        const deletedPicture = await Picture.deleteOne({_id : req.params.id});
+        commentController.deleteAllCommentOfPicture(req.params.id);
+        res.json(deletedPicture);
+    }catch(err){
+        res.json({message : err});
+    };
+};
+
+exports.getAllPictures = async (req, res)=>{
+	let pictures;
+	const {idUser} = req.body.data
+    try{
+        const allPicturesOfUser = await Picture.find({"owner":idUser});
+		if(allPicturesOfUser.length > 0){
+			pictures = allPicturesOfUser;
+			res.json(pictures);
+		}
+		else{
+			pictures = [];
+			res.json(pictures);
+		}
+        
+    }catch(err){
+        res.json({message : err})
+    }
+};
+
+exports.updatePictureStatus = async (req, res) =>{
+    const {status}= req.body.data;
+    try{
+        const  picture = await Picture.updateOne(
+            {_id : req.params.id},
+            {
+                $set: {
+                    status : status,
+                }
+            });
+         res.json(picture);
+     }catch(err){
+         res.json({message : err});
+     };
+};
+
+exports.getRandomPictureForVoting = async (req, res)=>{
+	const {idUser} = req.body.data;
+    try{
+        const allPictureDiffOwner = await Picture.find({$and:[
+            { "owner" : { $ne : idUser } },
+            { "status" : true},
+            { "voters" : { $nin : [idUser]}}
+        ]}
+        );
+        let randomPicture = allPictureDiffOwner[Math.floor(Math.random()*allPictureDiffOwner.length)];
+        if(randomPicture)
+            res.json(randomPicture)
+        else res.json({message : "no picture found"})
+    }
+    catch(err){
+        res.json({message: err})
+    }
+}
