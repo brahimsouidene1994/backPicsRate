@@ -1,5 +1,6 @@
 const db = require("../models");
 const multer = require("multer");
+const path = require('path');
 
 const Picture = db.picture;
 const commentController = require('./comment.controller');
@@ -8,13 +9,26 @@ const storage = multer.diskStorage({
     destination: (req, file, callback) => {
       callback(null, "uploads/userPictures");
     },
-    filename: (req, file, callback) => {
-      callback(null, Date.now() + ".jpg");
-    },
+    filename: (req, file, cb) => {
+        cb(null, file.fieldname + '_' + Date.now() 
+           + path.extname(file.originalname))
+          // file.fieldname is name of the field (image)
+          // path.extname get the uploaded file extension
+    }
+    // filename: (req, file, callback) => {
+    //   callback(null, Date.now() + ".jpg");
+    // },
 });
 
 const upload = multer({
     storage: storage,
+    fileFilter(req, file, cb) {
+        if (!file.originalname.match(/\.(png|jpg|jpeg|)$/)) { 
+           // upload only png and jpg format
+           return cb(new Error('Please upload a Image'))
+         }
+       cb(undefined, true)
+    }
     // fileFilter: (req, file, callback) => {
     //   if (file.mimetype === "jpeg/jpg") callback(null, true);
     //   else callback(new Error("cannot upload File type"), false);
