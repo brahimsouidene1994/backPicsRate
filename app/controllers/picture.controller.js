@@ -39,10 +39,11 @@ exports.createPicture = (req, res) => {
     const uploadResult = upload.single("photo");
     uploadResult(req, res, async function (err) {
         const{context,category,commentsStatus, userId}=req.body;
+        console.log(" createPicture(): data -> ");
 		console.log(req.body);
         if(req.file){
             if(!err){
-                const path = "http://192.168.1.15:3000/uploads/userPictures/" + req.file.filename;
+                const path = "http://pics-rating-api:3000/uploads/userPictures/" + req.file.filename;
                 const pictureToSave = new Picture({
                     category : category,
                     contextPic: context,
@@ -136,7 +137,9 @@ exports.getAllPictures = async (req, res)=>{
 };
 
 exports.updatePictureStatus = async (req, res) =>{
-    const {status}= req.body.data;
+    console.log(" createPicture(): data -> ");
+    console.log(req.body);
+    const {status}= req.body;
     try{
         const  picture = await Picture.updateOne(
             {_id : req.params.id},
@@ -145,7 +148,11 @@ exports.updatePictureStatus = async (req, res) =>{
                     status : status,
                 }
             });
-         res.json(picture);
+         res.status(200).json({
+            err: false,
+            message : "PICTURE Upda WITH SUCCESS",
+            object : picture
+            });
      }catch(err){
          res.json({message : err});
      };

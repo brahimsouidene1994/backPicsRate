@@ -4,7 +4,10 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start": "nodemon app.js"
+    "start": "nodemon app.js",
+    "infra:up": "sudo docker compose -f deploy/docker-compose.yaml up -d",
+    "infra:down": "sudo docker compose -f deploy/docker-compose.yaml down -v",
+    "infra:up:ps": "sudo docker compose -f deploy/docker-compose.yaml ps"
   },
   "author": "",
   "license": "ISC",
@@ -17,7 +20,7 @@
     "gridfs-stream": "^1.1.1",
     "jsonwebtoken": "^8.5.1",
     "mongoose": "^5.13.5",
-    "multer": "^1.4.3",
+    "multer": "^1.4.4",
     "multer-gridfs-storage": "^5.0.1",
     "nodemon": "^2.0.12"
   }

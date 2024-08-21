@@ -8,6 +8,8 @@ require('dotenv/config');
 const db = require("./app/models");
 const Role = db.role;
 
+console.log("starting.");
+
 app.use(cors());
 
 app.use('/uploads/userPictures', express.static('uploads/userPictures'))
@@ -19,10 +21,12 @@ app.get("/", (req, res) => {
     res.send("Welcome to bezkoder application." );
   });
 
+console.log("url mong ->",db.url);
+
 
 //connection to db
   db.mongoose
-  .connect(process.env.DB_CONNECTION, { useNewUrlParser: true, useUnifiedTopology: true })
+  .connect(db.url, { useNewUrlParser: true, useUnifiedTopology: true })
   .then(() =>{ 
       console.log("Successfully connect to MongoDB.");
       initial();

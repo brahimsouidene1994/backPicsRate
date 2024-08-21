@@ -1,0 +1,33 @@
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$DB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$DB_PASSWD
+    ports:
+      - $DB_PORT:$DB_PORT
+    volumes:
+      - ../data/db:/data/db
+  backend:
+    container_name: backend
+    depends_on:
+      - mongodb
+    image: pics-rating-api:latest
+    restart: unless-stopped
+    env_file: ./.env
+    ports:
+      - $PORT:$PORT
+    environment:
+      - DB_HOST=mongodb
+      - DB_USER=$DB_USERNAME
+      - DB_PASSWORD=$DB_PASSWD
+      - DB_NAME=$DB_NAME
+      - DB_PORT=$DB_PORT
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
