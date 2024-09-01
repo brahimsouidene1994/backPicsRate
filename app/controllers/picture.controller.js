@@ -43,7 +43,7 @@ exports.createPicture = (req, res) => {
 		console.log(req.body);
         if(req.file){
             if(!err){
-                const path = "http://pics-rating-api:3000/uploads/userPictures/" + req.file.filename;
+                const path = "http://192.168.1.15:3000/uploads/userPictures/" + req.file.filename;
                 const pictureToSave = new Picture({
                     category : category,
                     contextPic: context,
@@ -61,6 +61,7 @@ exports.createPicture = (req, res) => {
 						message : "PICTURE SAVED WITH SUCCESS",
 						object : savePicture
 						});
+                    console.log("savePicture -> ",savePicture);
                 }catch(err){
                     res.json({message : err});
                 };
@@ -137,8 +138,6 @@ exports.getAllPictures = async (req, res)=>{
 };
 
 exports.updatePictureStatus = async (req, res) =>{
-    console.log(" createPicture(): data -> ");
-    console.log(req.body);
     const {status}= req.body;
     try{
         const  picture = await Picture.updateOne(
@@ -159,7 +158,9 @@ exports.updatePictureStatus = async (req, res) =>{
 };
 
 exports.getRandomPictureForVoting = async (req, res)=>{
-	const {idUser} = req.body.data;
+	const {idUser} = req.params;
+
+    console.log("getRandomPictureOfOthers()", idUser)
     try{
         const allPictureDiffOwner = await Picture.find({$and:[
             { "owner" : { $ne : idUser } },

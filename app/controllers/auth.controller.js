@@ -8,7 +8,7 @@ var bcrypt = require("bcryptjs");
 
 exports.signup = (req, res) => {
     const {username, email,sexe, password, roles}= req.body;
-
+    console.log("auth: signup(): ", email)
     const user = new User({
       email: email,
       password: bcrypt.hashSync(password, 8),
@@ -145,6 +145,7 @@ exports.signup = (req, res) => {
   
   exports.signin = (req, res) => {
     const {email, username, password } =req.body;
+    console.log("auth: signin(): ", email)
     User.findOne({
         email: email
 		})

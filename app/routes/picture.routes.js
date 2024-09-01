@@ -39,8 +39,8 @@ module.exports = function(app) {
         controller.getOnePicture
       );
     
-    app.post(
-      "/api/picture/getOneRandomPicture",
+    app.get(
+      "/api/picture/getOneRandomPicture/:idUser",
       [authJwt.verifyToken],
       controller.getRandomPictureForVoting
     );
