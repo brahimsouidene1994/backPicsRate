@@ -4,7 +4,7 @@ pipeline {
         NODE_ENV = 'development' // Or 'production' based on your setup
     }
     tools {
-        nodejs '18.19.1'
+        Nodejs '18.19.1'
     }
     stages {
         stage('test node'){
