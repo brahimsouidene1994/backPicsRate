@@ -1,11 +1,11 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: backend-service
-  namespace: studio-dev
+  name: picsrate-service
+  namespace: studio-qa
 spec:
   selector:
-    app: backend-server
+    app: picsrate-api
   ports:
     - protocol: TCP
       port: 80

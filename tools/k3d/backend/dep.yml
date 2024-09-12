@@ -1,20 +1,20 @@
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: backend-server
-  namespace: studio-dev
+  name: picsrate-api
+  namespace: studio-qa
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: backend-server
+      app: picsrate-api
   template:
     metadata:
       labels:
-        app: backend-server
+        app: picsrate-api
     spec:
       containers:
-        - name: backend-server
-          image: k3d-dev-registry:5000/backend-server:v0.1
+        - name: picsrate-api
+          image: studio-registry:5000/picsrate-api:latest
           ports:
             - containerPort: 3000

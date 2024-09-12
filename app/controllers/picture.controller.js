@@ -43,7 +43,7 @@ exports.createPicture = (req, res) => {
 		console.log(req.body);
         if(req.file){
             if(!err){
-                const path = "http://192.168.1.15:3000/uploads/userPictures/" + req.file.filename;
+                const path = "http://picsrate-api.bbs-studio.tn/uploads/userPictures/" + req.file.filename;
                 const pictureToSave = new Picture({
                     category : category,
                     contextPic: context,
@@ -102,7 +102,8 @@ exports.updatePicture = async (req, res) =>{
 exports.getOnePicture = async (req, res)=>{
     try{
        const  picture = await Picture.findById(req.params.id);
-        res.json(picture);
+        if (picture) res.json(picture);
+        else res.json(null)
     }catch(err){
         res.json({message : err});
     };
@@ -169,9 +170,8 @@ exports.getRandomPictureForVoting = async (req, res)=>{
         ]}
         );
         let randomPicture = allPictureDiffOwner[Math.floor(Math.random()*allPictureDiffOwner.length)];
-        if(randomPicture)
-            res.json(randomPicture)
-        else res.json({message : "no picture found"})
+        if(randomPicture)res.json(randomPicture)
+        else res.json(null)
     }
     catch(err){
         res.json({message: err})

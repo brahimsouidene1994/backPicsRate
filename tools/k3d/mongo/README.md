@@ -1,1 +1,1 @@
-> helm upgrade --install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb -f ./values.yml -n studio-dev
+> helm upgrade --install mongodb oci://registry-1.docker.io/bitnamicharts/mongodb -f ./values.yml -n studio-qa
