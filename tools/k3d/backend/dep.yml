@@ -15,6 +15,19 @@ spec:
     spec:
       containers:
         - name: picsrate-api
-          image: studio-registry:5000/picsrate-api:latest
+          image: studio-registry:5000/backend-server:v0.1
           ports:
             - containerPort: 3000
+          env:
+            - name: DB_HOST
+              value: "mongodb"
+            - name: DB_USERNAME
+              value: "root"
+            - name: DB_PASSWD
+              value: "examplepassword"
+            - name: DB_NAME
+              value : "picsrate_db"
+            - name: DB_PORT
+              value: "27017"
+            - name: PORT
+              value: "3000"

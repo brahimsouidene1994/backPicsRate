@@ -20,7 +20,7 @@ app.use(require('body-parser').urlencoded({ extended: true }))
 app.get("/", (req, res) => {
     res.send("Welcome to bezkoder application." );
   });
-
+console.log("build from jenkins")
 console.log("url mong ->",db.url);
 
 
