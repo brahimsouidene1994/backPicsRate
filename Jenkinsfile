@@ -4,7 +4,7 @@ pipeline {
         NODE_ENV = 'development' // Or 'production' based on your setup
     }
     tools {
-        NodeJS '18.19.1' // Make sure this matches the name in Jenkins
+        NodeJS 'NodeJS 22.8.0' // Make sure this matches the name in Jenkins
     }
     stages {
         stage('Test Node.js Version') {
