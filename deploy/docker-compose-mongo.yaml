@@ -1,0 +1,15 @@
+services:
+  mongodb:
+    container_name: mongodb
+    image: mongo:latest
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=$DB_USERNAME
+      - MONGO_INITDB_ROOT_PASSWORD=$DB_PASSWD
+    ports:
+      - $DB_PORT:$DB_PORT
+    volumes:
+      - ../data/db:/data/db
+volumes:
+  db:

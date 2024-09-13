@@ -20,25 +20,15 @@ pipeline {
                 sh 'npm test'
             }
         }
-        stage('Run Node.js Server') {
+        stage('Deploy k3d') {
             steps {
                 // Start your Node.js server
-                sh 'nohup npm start &'
+                sh 'docker build -t backend-server:latest .'
+                sh 'docker tag backend-server:latest studio-registry:5000/backend-server:latest'
+                sh 'docker push studio-registry:5000/backend-server:latest'
+                sh 'kubectl delete -f ./tools/k3d/backend/dep.yml'
+                sh 'kubectl apply -f ./tools/k3d/backend/dep.yml'
             }
-        }
-    }
-    post {
-        always {
-            // Clean up workspace after build
-            cleanWs()
-        }
-        failure {
-            // Notify if the build fails
-            echo 'Build failed!'
-        }
-        success {
-            // Notify if the build succeeds
-            echo 'Node.js server is running!'
         }
     }
 }
