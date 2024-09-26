@@ -2,10 +2,53 @@ const config = require("../config/auth.config");
 const db = require("../models");
 const User = db.user;
 const Role = db.role;
+const KCUser = db.kcuser;
 
 var jwt = require("jsonwebtoken");
 var bcrypt = require("bcryptjs");
 
+
+exports.createUser = (req, res, next)=>{
+  const event = req.body;
+  
+  // Check if it's a registration event
+  if (event.type === 'LOGIN' || event.type === 'REGISTER') {
+    // Extract user data from the event
+    const userId = event.userId;
+    const email = event.details.email;
+    const username = event.details.username;
+
+    // Save the user data to your database
+    console.log(`New user registered: ${username}, Email: ${email}, UserID: ${userId}`);
+
+    KCUser.findOne({ id: userId },(err, user) => {
+      if (user) {
+        console.log('User already exists:', user);
+        res.json({ err:true,message: "User Already Exist" });
+      }
+      else {
+        const user = new KCUser({
+          id: userId,
+          username: username
+        });
+        user.save((err, user) => {
+          if (err) {
+            console.error('Error while inserting user:', err);
+            res.json({ err:true,message: err });
+          }
+          else {
+            console.log('New user inserted:', user);
+            res.status(200).json({
+              err: false,
+              message: "New User Added Successfully",
+              object: user
+          });
+          }
+        });
+      }
+    })
+  }
+}
 exports.signup = (req, res) => {
     const {username, email,sexe, password, roles}= req.body;
     console.log("auth: signup(): ", email)

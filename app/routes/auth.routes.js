@@ -27,4 +27,6 @@ module.exports = function(app) {
       controller.signupGoogle
     );
     app.post("/api/auth/signin", controller.signin);
+    app.post("/keycloak-events",controller.createUser);
   };
+  

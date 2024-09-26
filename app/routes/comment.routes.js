@@ -1,5 +1,7 @@
 const controller = require("../controllers/comment.controller");
-const { authJwt } = require("../middlewares");
+const { authJwt,extractToken } = require("../middlewares");
+const keycloak = require("../config/keycloak");
+
 module.exports = function(app) {
     app.use(function(req, res, next) {
       res.header(
@@ -11,12 +13,14 @@ module.exports = function(app) {
   
     app.post(
       "/api/comment/add",
-      [authJwt.verifyToken],
+      // [authJwt.verifyToken],
+      [keycloak.protect(),extractToken],
       controller.createComment
     );
     app.post(
         "/api/comment/getAllCommentByPicture",
-        [authJwt.verifyToken],
+        // [authJwt.verifyToken],
+        [keycloak.protect(),extractToken],
         controller.getAllCommentsByPicture
       );
   };

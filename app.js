@@ -1,6 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
+const keycloak = require('./app/config/keycloak');
 
 
 require('dotenv/config');
@@ -11,10 +12,10 @@ const Role = db.role;
 console.log("starting.");
 
 app.use(cors());
-
 app.use('/uploads/userPictures', express.static('uploads/userPictures'))
 
 //middleware
+app.use(keycloak.middleware());
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }))
 app.get("/", (req, res) => {
