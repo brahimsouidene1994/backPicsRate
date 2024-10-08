@@ -38,7 +38,8 @@ const upload = multer({
 exports.createPicture = (req, res) => {
     const uploadResult = upload.single("photo");
     uploadResult(req, res, async function (err) {
-        const{context,category,commentsStatus, userId}=req.body;
+        const {_id} = req.currentUser
+        const{context,category,commentsStatus}=req.body;
         console.log(" createPicture(): data -> ");
 		console.log(req.body);
         if(req.file){
@@ -51,7 +52,7 @@ exports.createPicture = (req, res) => {
                     path: path,
                     status : true,
                     commentsStatus : commentsStatus,
-                    owner : userId,
+                    owner : _id,
 					voters : []
                 });
                 try{
@@ -121,9 +122,9 @@ exports.deletePicture = async (req, res)=>{
 
 exports.getAllPictures = async (req, res)=>{
 	let pictures;
-	const {idUser} = req.body.data
+	const {_id} = req.currentUser
     try{
-        const allPicturesOfUser = await Picture.find({"owner":idUser});
+        const allPicturesOfUser = await Picture.find({"owner":`${_id}`});
 		if(allPicturesOfUser.length > 0){
 			pictures = allPicturesOfUser;
 			res.json(pictures);
@@ -159,14 +160,14 @@ exports.updatePictureStatus = async (req, res) =>{
 };
 
 exports.getRandomPictureForVoting = async (req, res)=>{
-	const {idUser} = req.params;
+	const {_id} = req.currentUser;
 
-    console.log("getRandomPictureOfOthers()", idUser)
+    console.log("getRandomPictureOfOthers()", _id)
     try{
         const allPictureDiffOwner = await Picture.find({$and:[
-            { "owner" : { $ne : idUser } },
+            { "owner" : { $ne : _id } },
             { "status" : true},
-            { "voters" : { $nin : [idUser]}}
+            { "voters" : { $nin : [_id]}}
         ]}
         );
         let randomPicture = allPictureDiffOwner[Math.floor(Math.random()*allPictureDiffOwner.length)];
@@ -176,4 +177,7 @@ exports.getRandomPictureForVoting = async (req, res)=>{
     catch(err){
         res.json({message: err})
     }
+}
+exports.test = async (req, res)=>{
+    console.log("test()", req.currentUser)
 }

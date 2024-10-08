@@ -4,11 +4,12 @@ const Comment = db.comment;
 const Picture = db.picture;
 
 exports.createComment = async (req, res) => {
-    const { userId, pictureId, message , v1,v2,v3 } = req.body;
+    const {_id} = req.currentUser
+    const { pictureId, message , v1,v2,v3 } = req.body;
     if(!message || message === null){
         const commentToSave = new Comment({
             picture: pictureId,
-            voter: userId,
+            voter: _id,
             message: null,
             voteOne:v1,
             voteTwo:v2,
@@ -23,7 +24,7 @@ exports.createComment = async (req, res) => {
                 message: "Comment SAVED WITH SUCCESS",
                 object: savedComment
             });
-            updateAndAddNewVoter(pictureId, userId)
+            updateAndAddNewVoter(pictureId, _id)
                 .then(()=>{
                     console.log('voter added')
                 })
@@ -34,7 +35,7 @@ exports.createComment = async (req, res) => {
     }else{
         const commentToSave = new Comment({
             picture: pictureId,
-            voter: userId,
+            voter: _id,
             message: message,
             voteOne:v1,
             voteTwo:v2,
@@ -48,7 +49,7 @@ exports.createComment = async (req, res) => {
                 message: "Comment SAVED WITH SUCCESS",
                 object: savedComment
             });
-            updateAndAddNewVoter(pictureId, userId)
+            updateAndAddNewVoter(pictureId, _id)
                 .then(()=>{
                     console.log('voter added')
                 })

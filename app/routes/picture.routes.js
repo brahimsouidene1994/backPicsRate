@@ -1,6 +1,7 @@
 const controller = require("../controllers/picture.controller");
 const { isAdmin, extractToken } = require("../middlewares");
 const keycloak = require("../config/keycloak");
+const getCurrentUser = require("../middlewares/getCurrentUser");
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -14,7 +15,7 @@ module.exports = function(app) {
     app.post(
       "/api/picture/add",
       //[authJwt.verifyToken],
-      [keycloak.protect(),extractToken],
+      [keycloak.protect(),extractToken,getCurrentUser],
       controller.createPicture
     );
     
@@ -46,15 +47,21 @@ module.exports = function(app) {
       );
     
     app.get(
-      "/api/picture/getOneRandomPicture/:idUser",
+      "/api/picture/getOneRandomPicture",
       //[authJwt.verifyToken],
-      [keycloak.protect(),extractToken],
+      [keycloak.protect(),extractToken,getCurrentUser],
       controller.getRandomPictureForVoting
     );
     app.post(
         "/api/picture/getAllByUser",
         //[authJwt.verifyToken],
-        [keycloak.protect(),extractToken],
+        [keycloak.protect(),extractToken,getCurrentUser],
         controller.getAllPictures
       );
+    app.get(
+      "/api/picture/test",
+      //[authJwt.verifyToken],
+      [keycloak.protect(),extractToken,getCurrentUser],
+      controller.test
+    )
   };

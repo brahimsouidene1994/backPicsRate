@@ -1,6 +1,7 @@
 const controller = require("../controllers/comment.controller");
 const { authJwt,extractToken } = require("../middlewares");
 const keycloak = require("../config/keycloak");
+const getCurrentUser = require("../middlewares/getCurrentUser");
 
 module.exports = function(app) {
     app.use(function(req, res, next) {
@@ -14,7 +15,7 @@ module.exports = function(app) {
     app.post(
       "/api/comment/add",
       // [authJwt.verifyToken],
-      [keycloak.protect(),extractToken],
+      [keycloak.protect(),extractToken,getCurrentUser],
       controller.createComment
     );
     app.post(
