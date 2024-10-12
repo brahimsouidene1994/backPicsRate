@@ -5,6 +5,12 @@ const path = require('path');
 const Picture = db.picture;
 const commentController = require('./comment.controller');
 
+const {
+    UPLOAD_URL_LOCAL,
+    UPLOAD_URL_K3D,
+    UPLOAD_LOCAL
+  } = process.env;
+
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
       callback(null, "uploads/userPictures");
@@ -44,7 +50,7 @@ exports.createPicture = (req, res) => {
 		console.log(req.body);
         if(req.file){
             if(!err){
-                const path = "http://picsrate-api.bbs-studio.tn/uploads/userPictures/" + req.file.filename;
+                const path = `${UPLOAD_LOCAL?UPLOAD_URL_LOCAL:UPLOAD_URL_K3D}/uploads/userPictures/` + req.file.filename;
                 const pictureToSave = new Picture({
                     category : category,
                     contextPic: context,

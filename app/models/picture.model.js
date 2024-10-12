@@ -5,7 +5,7 @@ const Picture = mongoose.model(
   new mongoose.Schema({
     category : {
       type: String,
-      enum:['Social','Business','Dating']
+      enum:['SOCIAL','BUSINESS','DATING']
     },
     contextPic : String,
     createdAt : Date,

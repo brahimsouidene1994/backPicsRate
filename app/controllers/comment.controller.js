@@ -61,7 +61,7 @@ exports.createComment = async (req, res) => {
 }
 
 exports.getAllCommentsByPicture = async (req, res)=>{
-	const {idPicture} = req.body.data;
+	const idPicture = req.params.idPicture;
     try{
         const allComments = await Comment.find({"picture":idPicture});
         res.json(allComments);

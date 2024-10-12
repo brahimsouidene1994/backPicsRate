@@ -18,8 +18,8 @@ module.exports = function(app) {
       [keycloak.protect(),extractToken,getCurrentUser],
       controller.createComment
     );
-    app.post(
-        "/api/comment/getAllCommentByPicture",
+    app.get(
+        "/api/comment/getAllCommentByPicture/:idPicture",
         // [authJwt.verifyToken],
         [keycloak.protect(),extractToken],
         controller.getAllCommentsByPicture

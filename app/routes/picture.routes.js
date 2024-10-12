@@ -52,7 +52,7 @@ module.exports = function(app) {
       [keycloak.protect(),extractToken,getCurrentUser],
       controller.getRandomPictureForVoting
     );
-    app.post(
+    app.get(
         "/api/picture/getAllByUser",
         //[authJwt.verifyToken],
         [keycloak.protect(),extractToken,getCurrentUser],
