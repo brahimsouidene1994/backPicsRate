@@ -1,0 +1,25 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-keycloak-providers
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/keycloak-providers/providers
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-keycloak-providers
+spec:
+  storageClassName: ""
+  volumeName: "pv-keycloak-providers"
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

@@ -20,16 +20,21 @@ extraVolumes:
 - name: themes-conf
   persistentVolumeClaim:
     claimName: pvc-keycloak-themes
+- name: providers-conf
+  persistentVolumeClaim:
+    claimName: pvc-keycloak-providers
 
 extraVolumeMounts:
 - mountPath: "/opt/keycloak/data/import"
   name: realm-conf
 - mountPath: "/opt/bitnami/keycloak/themes"
   name: themes-conf
+- mountPath: "/opt/bitnami/keycloak/providers"
+  name: providers-conf
 
 image:
-  registry: studio-registry:5000
-  repository: keycloak-webhook
+  registry: docker.io
+  repository: bitnami/keycloak
   tag: latest
   pullPolicy: IfNotPresent
 
@@ -59,6 +64,14 @@ extraEnvVars:
   - name: KC_LOG_CONSOLE_COLOR
     value: "true"
   - name: KC_HEALTH_ENABLED
+    value: "true"
+  - name: KC_HOSTNAME 
+    value: "https://auth.qa.picsrate.bbs-studio.tn"
+  - name: KC_HOSTNAME_URL
+    value: "https://auth.qa.picsrate.bbs-studio.tn"
+  - name: KC_HOSTNAME_ADMIN
+    value: "https://auth.qa.picsrate.bbs-studio.tn"
+  - name: KC_HOSTNAME_STRICT
     value: "true"
 
 postgresql:

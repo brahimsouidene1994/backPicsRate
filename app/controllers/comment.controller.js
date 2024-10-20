@@ -5,15 +5,15 @@ const Picture = db.picture;
 
 exports.createComment = async (req, res) => {
     const {_id} = req.currentUser
-    const { pictureId, message , v1,v2,v3 } = req.body;
+    const { pictureId, message , voteOne,voteTwo,voteThree } = req.body;
     if(!message || message === null){
         const commentToSave = new Comment({
             picture: pictureId,
             voter: _id,
             message: null,
-            voteOne:v1,
-            voteTwo:v2,
-            voteThree:v3,
+            voteOne:voteOne,
+            voteTwo:voteTwo,
+            voteThree:voteThree,
             createdAt: new Date()
         });
 
@@ -37,9 +37,9 @@ exports.createComment = async (req, res) => {
             picture: pictureId,
             voter: _id,
             message: message,
-            voteOne:v1,
-            voteTwo:v2,
-            voteThree:v3,
+            voteOne:voteOne,
+            voteTwo:voteTwo,
+            voteThree:voteThree,
             createdAt: new Date()
         });
         try {

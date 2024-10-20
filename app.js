@@ -21,9 +21,9 @@ app.use(require('body-parser').urlencoded({ extended: true }))
 app.get("/", (req, res) => {
     res.send("Welcome to bezkoder application." );
   });
-console.log("build from jenkins")
+console.log("build from jenkins");
+console.log("build from protect");
 console.log("url mong ->",db.url);
-
 
 //connection to db
   db.mongoose
@@ -33,8 +33,6 @@ console.log("url mong ->",db.url);
       initial();
 })
   .catch(err => console.error("Connection error", err));
-
-
 
 // routes
 require('./app/routes/auth.routes')(app);

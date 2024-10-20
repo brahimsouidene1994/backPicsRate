@@ -1,12 +1,21 @@
 const Keycloak = require("keycloak-connect");
-require('dotenv/config');
+const {
+  KEYCLOAK_REALM,
+  KEYCLOAK_URL,
+  KEYCLOAK_CLIENT,
+  KEYCLOAK_CLIENT_SECRET,
+} = process.env;
 
 const config = {
-  "realm": process.env.KEYCLOAK_REALM,
-  "auth-server-url": `${process.env.KEYCLOAK_URL}`,
+  "realm": `${KEYCLOAK_REALM}`,
+  "auth-server-url": `${KEYCLOAK_URL}`,
   "ssl-required": "external",
-  "resource": process.env.KEYCLOAK_CLIENT,
-  "bearer-only": true
+  "resource": `${KEYCLOAK_CLIENT}`,
+  "bearerOnly": true,
+  "credentials": {
+    "secret": `${KEYCLOAK_CLIENT_SECRET}`
+  },
+  "confidential-port": 0
 }
 
-module.exports = new Keycloak({}, config);
+module.exports = new Keycloak({},config);

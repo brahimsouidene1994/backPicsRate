@@ -11,13 +11,21 @@
 
 > kubectl apply -f keycloak/themes/themes-pvc.yaml -n studio-qa
 
-- deploy data pod to paste the theme in it
-
 > kubectl apply -f keycloak/themes/data-pod.yaml -n studio-qa
 
 > kubectl cp keycloak/themes/keywind keycloak-utility:/keycloak/data/ -n studio-qa
 
 > kubectl delete -f keycloak/themes/data-pod.yaml -n studio-qa
+
+### PROVIDER
+
+> kubectl apply -f keycloak/providers/provider-pvc.yaml -n studio-qa
+
+> kubectl apply -f keycloak/providers/data-pod.yaml -n studio-qa
+
+> kubectl cp keycloak/providers/keycloak-webhook-0.5.0-all.jar keycloak-utility:/keycloak/data/ -n studio-qa
+
+> kubectl delete -f keycloak/providers/data-pod.yaml -n studio-qa
 
 ### keycloak
 

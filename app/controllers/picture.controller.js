@@ -185,5 +185,5 @@ exports.getRandomPictureForVoting = async (req, res)=>{
     }
 }
 exports.test = async (req, res)=>{
-    console.log("test()", req.currentUser)
+    console.log("test() called")
 }

@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: picsrate-api
-          image: studio-registry:5000/picsrate-api:latest
+          image: studio-registry:5000/picsrate-api:v.01
           ports:
             - containerPort: 3000
           env:
@@ -31,3 +31,11 @@ spec:
               value: "27017"
             - name: PORT
               value: "3000"
+            - name: KEYCLOAK_REALM
+              value: "picsrate"
+            - name: KEYCLOAK_CLIENT
+              value: "web_app"
+            - name: KEYCLOAK_CLIENT_SECRET
+              value: "0hKDIEYG62R1EvrtO8zegPf2nhMeZmLa"
+            - name: KEYCLOAK_URL
+              value: "https://auth.qa.picsrate.bbs-studio.tn"

@@ -7,7 +7,7 @@ module.exports = function(app) {
     app.use(function(req, res, next) {
       res.header(
         "Access-Control-Allow-Headers",
-        "x-access-token, Origin, Content-Type, Accept"
+        "Authorization, Origin, Content-Type, Accept"
       );
       next();
     });
@@ -59,9 +59,14 @@ module.exports = function(app) {
         controller.getAllPictures
       );
     app.get(
+      "/api/picture/test-access",
+      //[authJwt.verifyToken],
+      [keycloak.protect()],
+      controller.test
+    )
+    app.get(
       "/api/picture/test",
       //[authJwt.verifyToken],
-      [keycloak.protect(),extractToken,getCurrentUser],
       controller.test
     )
   };

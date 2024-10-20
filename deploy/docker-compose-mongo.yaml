@@ -35,6 +35,10 @@ services:
       - ./keycloak/realm-config:/opt/keycloak/data/import
       - ./keycloak/themes/keywind/:/opt/keycloak/themes/keywind/
     environment:
+      - KEYCLOAK_LOG_LEVEL=DEBUG
+      - PROXY_ADDRESS_FORWARDING=true
+      - KC_PROXY=passthrough
+      - KEYCLOAK_EXTRA_ARGS="-Dkeycloak.import=/opt/keycloak/data/import"
       - KC_DB=dev-file
       - KEYCLOAK_ADMIN=admin
       - KEYCLOAK_ADMIN_PASSWORD=admin
