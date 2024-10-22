@@ -2,28 +2,24 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const keycloak = require('./app/config/keycloak');
-
-
-require('dotenv/config');
-
 const db = require("./app/models");
+
 const Role = db.role;
+console.log("starting...");
 
-console.log("starting.");
-
-app.use(cors());
+// Use Keycloak middleware
+app.use(
+  cors({origin: true}),
+  keycloak.middleware(),
+);
+// middleware
 app.use('/uploads/userPictures', express.static('uploads/userPictures'))
-
-//middleware
-app.use(keycloak.middleware());
 app.use(require('body-parser').json());
 app.use(require('body-parser').urlencoded({ extended: true }))
 app.get("/", (req, res) => {
-    res.send("Welcome to bezkoder application." );
+    res.send("Welcome to PicsRate." );
   });
-console.log("build from jenkins");
-console.log("build from protect");
-console.log("url mong ->",db.url);
+
 
 //connection to db
   db.mongoose
@@ -36,7 +32,7 @@ console.log("url mong ->",db.url);
 
 // routes
 require('./app/routes/auth.routes')(app);
-require('./app/routes/user.routes')(app);
+require('./app/routes/user.routes')(app,);
 require('./app/routes/picture.routes')(app);
 require('./app/routes/comment.routes')(app);
 app.listen(process.env.PORT, () => {

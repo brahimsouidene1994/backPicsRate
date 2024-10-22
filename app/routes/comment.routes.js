@@ -14,13 +14,11 @@ module.exports = function(app) {
   
     app.post(
       "/api/comment/add",
-      // [authJwt.verifyToken],
       [keycloak.protect(),extractToken,getCurrentUser],
       controller.createComment
     );
     app.get(
         "/api/comment/getAllCommentByPicture/:idPicture",
-        // [authJwt.verifyToken],
         [keycloak.protect(),extractToken],
         controller.getAllCommentsByPicture
       );

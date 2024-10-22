@@ -35,12 +35,20 @@ extraVolumeMounts:
 image:
   registry: docker.io
   repository: bitnami/keycloak
-  tag: latest
+  tag: 21.1.1-debian-11-r17
   pullPolicy: IfNotPresent
+
+resources:
+  limits:
+    cpu: 500m
+    memory: 1024Mi
+  requests:
+    cpu: 250m
+    memory: 512Mi
 
 extraEnvVars:
   - name: KEYCLOAK_LOG_LEVEL
-    value: DEBUG
+    value: INFO
   - name: KEYCLOAK_ADMIN
     value: "admin"
   - name: KEYCLOAK_ADMIN_PASSWORD
@@ -59,20 +67,20 @@ extraEnvVars:
     value: "auth_password"
   - name: WEBHOOK_HTTP_INCLUDE_TOKEN
     value: "true"
-  - name: KC_METRICS_ENABLED
-    value: "true"
-  - name: KC_LOG_CONSOLE_COLOR
-    value: "true"
-  - name: KC_HEALTH_ENABLED
-    value: "true"
-  - name: KC_HOSTNAME 
-    value: "https://auth.qa.picsrate.bbs-studio.tn"
-  - name: KC_HOSTNAME_URL
-    value: "https://auth.qa.picsrate.bbs-studio.tn"
-  - name: KC_HOSTNAME_ADMIN
-    value: "https://auth.qa.picsrate.bbs-studio.tn"
-  - name: KC_HOSTNAME_STRICT
-    value: "true"
+  # - name: KC_HOSTNAME 
+  #   value: "https://auth.qa.picsrate.bbs-studio.tn"
+  # - name: KC_HOSTNAME_URL
+  #   value: "https://auth.qa.picsrate.bbs-studio.tn"
+  # - name: KC_HOSTNAME_ADMIN
+  #   value: "https://auth.qa.picsrate.bbs-studio.tn"
+  # - name: KC_HOSTNAME_STRICT
+  #   value: "true"
+  # - name: KC_METRICS_ENABLED
+  #   value: "true"
+  # - name: KC_LOG_CONSOLE_COLOR
+  #   value: "true"
+  # - name: KC_HEALTH_ENABLED
+  #   value: "true"
 
 postgresql:
   enabled: true
@@ -103,3 +111,14 @@ tls:
 
 volumePermissions:
   enabled: true
+
+metrics:
+  enabled: true
+
+readinessProbe:
+  enabled: true
+  initialDelaySeconds: 180  # Delay before checking readiness after pod starts
+  periodSeconds: 10        # How often to check
+  timeoutSeconds: 5        # Timeout for each check
+  successThreshold: 1      # Success threshold
+  failureThreshold: 5 

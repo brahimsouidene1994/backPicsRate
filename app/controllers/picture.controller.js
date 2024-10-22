@@ -185,5 +185,12 @@ exports.getRandomPictureForVoting = async (req, res)=>{
     }
 }
 exports.test = async (req, res)=>{
-    console.log("test() called")
+    console.log("api test normal")
+    res.json({message: "api test normal"})
+}
+
+exports.testAccess = async (req, res)=>{
+    const {_id} = req.currentUser;
+    console.log("api testAccess",_id)
+    res.json({message: "api testAccess"})
 }

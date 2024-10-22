@@ -4,6 +4,7 @@ const {
   KEYCLOAK_URL,
   KEYCLOAK_CLIENT,
   KEYCLOAK_CLIENT_SECRET,
+  KEYCLOAK_REALM_PUBLIC_KEY
 } = process.env;
 
 const config = {
@@ -15,7 +16,7 @@ const config = {
   "credentials": {
     "secret": `${KEYCLOAK_CLIENT_SECRET}`
   },
-  "confidential-port": 0
+  "realmPublicKey":`${KEYCLOAK_REALM_PUBLIC_KEY}`
 }
 
-module.exports = new Keycloak({},config);
+module.exports = new Keycloak({}, config);

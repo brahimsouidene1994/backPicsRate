@@ -15,7 +15,7 @@ spec:
     spec:
       containers:
         - name: picsrate-api
-          image: studio-registry:5000/picsrate-api:v.01
+          image: studio-registry:5000/picsrate-api:latest
           ports:
             - containerPort: 3000
           env:
@@ -39,3 +39,5 @@ spec:
               value: "0hKDIEYG62R1EvrtO8zegPf2nhMeZmLa"
             - name: KEYCLOAK_URL
               value: "https://auth.qa.picsrate.bbs-studio.tn"
+            - name: KEYCLOAK_REALM_PUBLIC_KEY
+              value: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0nEg+Ey+huW300q0YFBzGLq0CASS9+P0/m5nuGpWSrT14+P+FCVIQosbxXtZsBuDXirYBC1SR6mYalDuU9YBrnecFm4XD25YbKDqObG7rBzmZpmLK5S5vAXYFbaBSAJN5UV42arGGIj3XdlX+RTlMJU5p63AI0ANOm93tEzUPWod+hA/dtA3LsIDdTCbL/7nKHS8lBYNFBZbJzezNafCRU2nsOVreMfT3AMl0dH52cMtCuVm5HGoWDqMFN4cP3zv0K3LkR74z0pws9ipwkBIHlXLMcQhWeddQL/5FFsfBulyzmauHOq5Iltfdcm+d1Z1JDLqwrYQlucLQ4Hz2Zzq3wIDAQAB"

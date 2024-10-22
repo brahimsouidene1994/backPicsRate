@@ -23,6 +23,7 @@
     "express": "^4.17.1",
     "express-session": "^1.18.1",
     "gridfs-stream": "^1.1.1",
+    "hogan-express": "^0.5.2",
     "jest": "^29.7.0",
     "jsonwebtoken": "^8.5.1",
     "keycloak-connect": "^25.0.6",
