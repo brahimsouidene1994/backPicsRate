@@ -6,9 +6,7 @@ const Picture = db.picture;
 const commentController = require('./comment.controller');
 
 const {
-    UPLOAD_URL_LOCAL,
-    UPLOAD_URL_K3D,
-    UPLOAD_LOCAL
+    UPLOAD_IMAGE_URL
   } = process.env;
 
 const storage = multer.diskStorage({
@@ -50,7 +48,7 @@ exports.createPicture = (req, res) => {
 		console.log(req.body);
         if(req.file){
             if(!err){
-                const path = `${UPLOAD_LOCAL?UPLOAD_URL_LOCAL:UPLOAD_URL_K3D}/uploads/userPictures/` + req.file.filename;
+                const path = `${UPLOAD_IMAGE_URL}/uploads/userPictures/` + req.file.filename;
                 const pictureToSave = new Picture({
                     category : category,
                     contextPic: context,
