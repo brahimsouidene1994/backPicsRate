@@ -6,6 +6,7 @@ const db = require("./app/models");
 
 const Role = db.role;
 console.log("starting...");
+console.log("mongo...",db.url);
 
 // Use Keycloak middleware
 app.use(
