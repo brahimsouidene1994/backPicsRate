@@ -5,6 +5,10 @@ const path = require('path');
 const Picture = db.picture;
 const commentController = require('./comment.controller');
 
+const {
+    UPLOAD_IMAGE_URL
+  } = process.env;
+
 const storage = multer.diskStorage({
     destination: (req, file, callback) => {
       callback(null, "uploads/userPictures");
@@ -38,11 +42,13 @@ const upload = multer({
 exports.createPicture = (req, res) => {
     const uploadResult = upload.single("photo");
     uploadResult(req, res, async function (err) {
-        const{context,category,commentsStatus, userId}=req.body;
+        const {_id} = req.currentUser
+        const{context,category,commentsStatus}=req.body;
+        console.log(" createPicture(): data -> ");
 		console.log(req.body);
         if(req.file){
             if(!err){
-                const path = "http://192.168.1.15:3000/uploads/userPictures/" + req.file.filename;
+                const path = `${UPLOAD_IMAGE_URL}/uploads/userPictures/` + req.file.filename;
                 const pictureToSave = new Picture({
                     category : category,
                     contextPic: context,
@@ -50,7 +56,7 @@ exports.createPicture = (req, res) => {
                     path: path,
                     status : true,
                     commentsStatus : commentsStatus,
-                    owner : userId,
+                    owner : _id,
 					voters : []
                 });
                 try{
@@ -60,6 +66,7 @@ exports.createPicture = (req, res) => {
 						message : "PICTURE SAVED WITH SUCCESS",
 						object : savePicture
 						});
+                    console.log("savePicture -> ",savePicture);
                 }catch(err){
                     res.json({message : err});
                 };
@@ -100,7 +107,8 @@ exports.updatePicture = async (req, res) =>{
 exports.getOnePicture = async (req, res)=>{
     try{
        const  picture = await Picture.findById(req.params.id);
-        res.json(picture);
+        if (picture) res.json(picture);
+        else res.json(null)
     }catch(err){
         res.json({message : err});
     };
@@ -118,9 +126,9 @@ exports.deletePicture = async (req, res)=>{
 
 exports.getAllPictures = async (req, res)=>{
 	let pictures;
-	const {idUser} = req.body.data
+	const {_id} = req.currentUser
     try{
-        const allPicturesOfUser = await Picture.find({"owner":idUser});
+        const allPicturesOfUser = await Picture.find({"owner":`${_id}`});
 		if(allPicturesOfUser.length > 0){
 			pictures = allPicturesOfUser;
 			res.json(pictures);
@@ -136,7 +144,7 @@ exports.getAllPictures = async (req, res)=>{
 };
 
 exports.updatePictureStatus = async (req, res) =>{
-    const {status}= req.body.data;
+    const {status}= req.body;
     try{
         const  picture = await Picture.updateOne(
             {_id : req.params.id},
@@ -145,27 +153,42 @@ exports.updatePictureStatus = async (req, res) =>{
                     status : status,
                 }
             });
-         res.json(picture);
+         res.status(200).json({
+            err: false,
+            message : "PICTURE Upda WITH SUCCESS",
+            object : picture
+            });
      }catch(err){
          res.json({message : err});
      };
 };
 
 exports.getRandomPictureForVoting = async (req, res)=>{
-	const {idUser} = req.body.data;
+	const {_id} = req.currentUser;
+
+    console.log("getRandomPictureOfOthers()", _id)
     try{
         const allPictureDiffOwner = await Picture.find({$and:[
-            { "owner" : { $ne : idUser } },
+            { "owner" : { $ne : _id } },
             { "status" : true},
-            { "voters" : { $nin : [idUser]}}
+            { "voters" : { $nin : [_id]}}
         ]}
         );
         let randomPicture = allPictureDiffOwner[Math.floor(Math.random()*allPictureDiffOwner.length)];
-        if(randomPicture)
-            res.json(randomPicture)
-        else res.json({message : "no picture found"})
+        if(randomPicture)res.json(randomPicture)
+        else res.json(null)
     }
     catch(err){
         res.json({message: err})
     }
+}
+exports.test = async (req, res)=>{
+    console.log("api test normal")
+    res.json({message: "api test normal"})
+}
+
+exports.testAccess = async (req, res)=>{
+    const {_id} = req.currentUser;
+    console.log("api testAccess",_id)
+    res.json({message: "api testAccess"})
 }

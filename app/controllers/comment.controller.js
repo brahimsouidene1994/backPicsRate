@@ -4,15 +4,16 @@ const Comment = db.comment;
 const Picture = db.picture;
 
 exports.createComment = async (req, res) => {
-    const { userId, pictureId, message , v1,v2,v3 } = req.body;
+    const {_id} = req.currentUser
+    const { pictureId, message , voteOne,voteTwo,voteThree } = req.body;
     if(!message || message === null){
         const commentToSave = new Comment({
             picture: pictureId,
-            voter: userId,
+            voter: _id,
             message: null,
-            voteOne:v1,
-            voteTwo:v2,
-            voteThree:v3,
+            voteOne:voteOne,
+            voteTwo:voteTwo,
+            voteThree:voteThree,
             createdAt: new Date()
         });
 
@@ -23,7 +24,7 @@ exports.createComment = async (req, res) => {
                 message: "Comment SAVED WITH SUCCESS",
                 object: savedComment
             });
-            updateAndAddNewVoter(pictureId, userId)
+            updateAndAddNewVoter(pictureId, _id)
                 .then(()=>{
                     console.log('voter added')
                 })
@@ -34,11 +35,11 @@ exports.createComment = async (req, res) => {
     }else{
         const commentToSave = new Comment({
             picture: pictureId,
-            voter: userId,
+            voter: _id,
             message: message,
-            voteOne:v1,
-            voteTwo:v2,
-            voteThree:v3,
+            voteOne:voteOne,
+            voteTwo:voteTwo,
+            voteThree:voteThree,
             createdAt: new Date()
         });
         try {
@@ -48,7 +49,7 @@ exports.createComment = async (req, res) => {
                 message: "Comment SAVED WITH SUCCESS",
                 object: savedComment
             });
-            updateAndAddNewVoter(pictureId, userId)
+            updateAndAddNewVoter(pictureId, _id)
                 .then(()=>{
                     console.log('voter added')
                 })
@@ -60,7 +61,7 @@ exports.createComment = async (req, res) => {
 }
 
 exports.getAllCommentsByPicture = async (req, res)=>{
-	const {idPicture} = req.body.data;
+	const idPicture = req.params.idPicture;
     try{
         const allComments = await Comment.find({"picture":idPicture});
         res.json(allComments);

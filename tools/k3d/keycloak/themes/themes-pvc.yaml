@@ -1,0 +1,25 @@
+kind: PersistentVolume
+apiVersion: v1
+metadata:
+  name: pv-keycloak-themes
+spec:
+  storageClassName: ""
+  capacity:
+    storage: 1Gi
+  accessModes:
+    - ReadWriteOnce
+  hostPath:
+    path: /data/keycloak-themes/themes
+---
+kind: PersistentVolumeClaim
+apiVersion: v1
+metadata:
+  name: pvc-keycloak-themes
+spec:
+  storageClassName: ""
+  volumeName: "pv-keycloak-themes"
+  accessModes:
+  - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi

@@ -1,0 +1,13 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: picsrate-service
+  namespace: studio-qa
+spec:
+  selector:
+    app: picsrate-api
+  ports:
+    - protocol: TCP
+      port: 80
+      targetPort: 3000
+      

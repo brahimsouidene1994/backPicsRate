@@ -5,7 +5,7 @@ module.exports = function(app) {
     app.use(function(req, res, next) {
       res.header(
         "Access-Control-Allow-Headers",
-        "x-access-token, Origin, Content-Type, Accept"
+        "Authorization, Origin, Content-Type, Accept"
       );
       next();
     });
@@ -18,7 +18,7 @@ module.exports = function(app) {
       ],
       controller.signup
     );
-	app.post(
+	  app.post(
       "/api/auth/signupGoogle",
     //   [
     //     verifySignUp.checkDuplicateUsernameOrEmail,
@@ -27,4 +27,6 @@ module.exports = function(app) {
       controller.signupGoogle
     );
     app.post("/api/auth/signin", controller.signin);
+    app.post("/keycloak-events",controller.createUser);
   };
+  

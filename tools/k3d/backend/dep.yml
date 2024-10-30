@@ -1,0 +1,45 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: picsrate-api
+  namespace: studio-qa
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: picsrate-api
+  template:
+    metadata:
+      labels:
+        app: picsrate-api
+    spec:
+      containers:
+        - name: picsrate-api
+          image: studio-registry:5000/picsrate-api:latest
+          ports:
+            - containerPort: 3000
+          env:
+            - name: DB_HOST
+              value: "mongodb"
+            - name: DB_USERNAME
+              value: "root"
+            - name: DB_PASSWD
+              value: "examplepassword"
+            - name: DB_NAME
+              value : "picsrate_db"
+            - name: DB_PORT
+              value: "27017"
+            - name: PORT
+              value: "3000"
+            - name: KEYCLOAK_REALM
+              value: "picsrate"
+            - name: KEYCLOAK_CLIENT
+              value: "web_app"
+            - name: KEYCLOAK_CLIENT_SECRET
+              value: "0hKDIEYG62R1EvrtO8zegPf2nhMeZmLa"
+            - name: KEYCLOAK_URL
+              value: "https://auth.qa.picsrate.bbs-studio.tn"
+            - name: UPLOAD_IMAGE_URL
+              value: "https://picsrate-api.bbs-studio.tn"            
+            - name: KEYCLOAK_REALM_PUBLIC_KEY
+              value: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0nEg+Ey+huW300q0YFBzGLq0CASS9+P0/m5nuGpWSrT14+P+FCVIQosbxXtZsBuDXirYBC1SR6mYalDuU9YBrnecFm4XD25YbKDqObG7rBzmZpmLK5S5vAXYFbaBSAJN5UV42arGGIj3XdlX+RTlMJU5p63AI0ANOm93tEzUPWod+hA/dtA3LsIDdTCbL/7nKHS8lBYNFBZbJzezNafCRU2nsOVreMfT3AMl0dH52cMtCuVm5HGoWDqMFN4cP3zv0K3LkR74z0pws9ipwkBIHlXLMcQhWeddQL/5FFsfBulyzmauHOq5Iltfdcm+d1Z1JDLqwrYQlucLQ4Hz2Zzq3wIDAQAB"
