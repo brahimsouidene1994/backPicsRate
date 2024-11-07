@@ -15,8 +15,13 @@ module.exports = function(app) {
     app.post(
       "/api/picture/add",
       [keycloak.protect(),extractToken,getCurrentUser],
-      controller.createPicture
+      controller.createPictureFb
     );
+    // app.post(
+    //   "/api/picture/addFB",
+    //   // [keycloak.protect(),extractToken,getCurrentUser],
+    //   controller.createPictureFb
+    // );
     
     app.patch(
       "/api/picture/update/:id",
@@ -32,9 +37,8 @@ module.exports = function(app) {
     app.delete(
       "/api/picture/delete/:id",
       [keycloak.protect(),extractToken],
-      controller.deletePicture
+      controller.deletePictureFb
     );
-
     app.get(
         "/api/picture/getOnePicture/:id",
         [keycloak.protect(),extractToken],
@@ -51,15 +55,15 @@ module.exports = function(app) {
         [keycloak.protect(),extractToken,getCurrentUser],
         controller.getAllPictures
       );
-    app.get(
-      "/api/picture/test-access",
-      keycloak.protect(),
-      extractToken,
-      getCurrentUser,
-      controller.testAccess
-    )
-    app.get(
-      "/api/picture/test",
-      controller.test
-    )
+    // app.get(
+    //   "/api/picture/test-access",
+    //   keycloak.protect(),
+    //   extractToken,
+    //   getCurrentUser,
+    //   controller.testAccess
+    // )
+    // app.get(
+    //   "/api/picture/test",
+    //   controller.test
+    // )
   };

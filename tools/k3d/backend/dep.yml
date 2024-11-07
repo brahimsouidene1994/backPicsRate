@@ -43,3 +43,17 @@ spec:
               value: "https://picsrate-api.bbs-studio.tn"            
             - name: KEYCLOAK_REALM_PUBLIC_KEY
               value: "MIIBIjANBgkqhkiG9w0BAQEFAAOCAQ8AMIIBCgKCAQEA0nEg+Ey+huW300q0YFBzGLq0CASS9+P0/m5nuGpWSrT14+P+FCVIQosbxXtZsBuDXirYBC1SR6mYalDuU9YBrnecFm4XD25YbKDqObG7rBzmZpmLK5S5vAXYFbaBSAJN5UV42arGGIj3XdlX+RTlMJU5p63AI0ANOm93tEzUPWod+hA/dtA3LsIDdTCbL/7nKHS8lBYNFBZbJzezNafCRU2nsOVreMfT3AMl0dH52cMtCuVm5HGoWDqMFN4cP3zv0K3LkR74z0pws9ipwkBIHlXLMcQhWeddQL/5FFsfBulyzmauHOq5Iltfdcm+d1Z1JDLqwrYQlucLQ4Hz2Zzq3wIDAQAB"
+            - name: APP_KEY
+              value: "AIzaSyB-om50aKwOa6Ip5h4uLRolcZ20f1PtDXE"
+            - name: AUTH_DOMAINE
+              value: "picsrate-b4958.firebaseapp.com"
+            - name: PROJECT_ID
+              value: "picsrate-b4958"
+            - name: STORAGE_BUCKET
+              value: "picsrate-b4958.appspot.com"
+            - name: MASSAGING_SENDER_ID
+              value: "918786787572"
+            - name: APP_ID
+              value: "1:918786787572:web:0aa5338cbcf0c4f4d6b6a1"
+            - name: MEASURELENT_ID
+              value: "G-5NDWT4DQMG"
